@@ -357,6 +357,8 @@ int32_t BME280_Compensation(bme280_data_t *device)
 
     humi_out = (uint32_t)(hvar>>12);
     device->humidity = (humi_out/1024.0f);
+
+    device->altitude = (1-(float)pow((((device->pressure*100.0) / STD_PRESSURE)),(1.0/5.255f))) * 44330.0f;
     
     return 0;
 }
@@ -381,7 +383,8 @@ void BME280_DataProc(bme280_data_t *device)
         static uint8_t isFirst = 1;
         if(!isFirst)
         {
-            sprintf(debug_buf, "T: %.2f C, P: %.2f hPa, H: %.2f %%\r\n", device->temperature, device->pressure, device->humidity);
+            
+            sprintf(debug_buf, "T: %.2f C, P: %.2f hPa, H: %.2f %%, A: %.2f m\r\n", device->temperature, device->pressure, device->humidity,device->altitude);
             HAL_UART_Transmit(UART_DEBUG, (uint8_t*)debug_buf, strlen(debug_buf), 500);
         }
         isFirst = 0;

@@ -44,6 +44,11 @@
 #define IS_UART                   1        // set to 1 to enable uart debugging info
 #define UART_DEBUG                &huart1  // default debug uart
 
+/***********/
+/** other **/
+
+#define STD_PRESSURE 101325.0f             // standard sea-level pressure in Pa, used for altitude calculation
+
 /********************/
 /** data structure **/
 
@@ -53,6 +58,7 @@ typedef struct
   float pressure;     
   float temperature;  
   float humidity;
+  float altitude;
 
   /* raw data */
   int32_t temp_raw,
